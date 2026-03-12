@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dutch Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12101A;
+    --surface: #1E1B2E;
+    --surface2: #272440;
+    --border: #2E2A45;
+    --text: #F0EEF8;
+    --muted: #8B87A8;
+    --accent: #7C5CFC;
+    --accent2: #9B7BFF;
+    --accent-bg: rgba(124,92,252,0.15);
+    --success: #4ADE80;
+    --success-bg: rgba(74,222,128,0.12);
+    --success-border: rgba(74,222,128,0.3);
+    --error: #F87171;
+    --error-bg: rgba(248,113,113,0.12);
+    --error-border: rgba(248,113,113,0.3);
+    --yellow: #FFD166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 60px;
+  }
+
+  /* HEADER */
+  .header { text-align: center; margin-bottom: 32px; }
+  .flag-wrap {
+    width: 64px; height: 64px;
+    background: var(--surface2);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 24px rgba(124,92,252,0.2);
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .header p { font-size: 14px; color: var(--muted); font-weight: 600; }
+
+  /* SCORE */
+  .score-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .score-pill {
+    flex: 1;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .score-pill .val {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent2);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .score-pill .lbl {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* FIELD */
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B87A8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  select:focus { border-color: var(--accent); }
+
+  /* START */
+  #startArea { text-align: center; padding: 20px 0 8px; }
+  #startArea p { font-size: 14px; color: var(--muted); font-weight: 600; margin-bottom: 16px; }
+
+  /* PRIMARY BTN */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 16px rgba(124,92,252,0.35);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,252,0.45); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* EXERCISE */
+  .exercise { margin-top: 24px; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .exercise-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    background: var(--accent-bg);
+    padding: 5px 12px;
+    border-radius: 99px;
+  }
+
+  .sentence-box {
+    background: var(--surface2);
+    border-radius: 18px;
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    border: 1.5px solid var(--border);
+  }
+  .sentence {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .gap-input {
+    border: none;
+    border-bottom: 2.5px solid var(--accent);
+    background: transparent;
+    padding: 0 6px 2px;
+    font-size: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--accent2);
+    min-width: 90px;
+    width: auto;
+    outline: none;
+    text-align: center;
+    caret-color: var(--accent2);
+  }
+  .gap-input::placeholder { color: rgba(124,92,252,0.4); }
+  .gap-input:disabled { opacity: 0.75; cursor: default; }
+
+  .hint-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .hint-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* CHOICES */
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .choice-btn {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .choice-btn .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent2);
+  }
+  .choice-btn:hover:not(:disabled) .opt-letter {
+    background: var(--accent);
+    color: white;
+  }
+  .choice-btn:disabled { cursor: default; }
+  .choice-btn.correct {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success);
+  }
+  .choice-btn.correct .opt-letter { background: var(--success); color: #12101A; }
+  .choice-btn.wrong {
+    background: var(--error-bg);
+    border-color: var(--error-border);
+    color: var(--error);
+  }
+  .choice-btn.wrong .opt-letter { background: var(--error); color: white; }
+  .choice-btn.reveal {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success);
+  }
+  .choice-btn.reveal .opt-letter { background: var(--success); color: #12101A; }
+
+  /* FEEDBACK */
+  .feedback {
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .feedback-icon { font-size: 18px; flex-shrink: 0; }
+  .feedback.correct { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+  .feedback.wrong { background: var(--error-bg); color: var(--error); border: 1px solid var(--error-border); }
+  .feedback .transl { font-weight: 600; opacity: 0.85; font-size: 13px; margin-top: 2px; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+  .loading-wrap { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 14px; font-weight: 700; color: var(--muted); }
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 16px;
+    padding: 5px;
+    margin-bottom: 24px;
+    gap: 4px;
+  }
+  .tab-btn {
+    flex: 1; padding: 10px 8px;
+    border: none; border-radius: 12px;
+    background: transparent; color: var(--muted);
+    font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 800;
+    cursor: pointer; transition: all 0.2s; display: flex;
+    align-items: center; justify-content: center; gap: 6px;
+  }
+  .tab-btn.active { background: var(--accent); color: white; box-shadow: 0 4px 12px rgba(124,92,252,0.4); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* VOCAB TAB */
+  .vocab-input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .vocab-input-row input {
+    flex: 1; padding: 11px 14px;
+    border: 1.5px solid var(--border); border-radius: 14px;
+    background: var(--surface2); color: var(--text);
+    font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 700;
+    outline: none; transition: border-color 0.15s;
+  }
+  .vocab-input-row input::placeholder { color: var(--muted); font-weight: 600; }
+  .vocab-input-row input:focus { border-color: var(--accent); }
+  .vocab-add-btn {
+    padding: 11px 18px; border: none; border-radius: 14px;
+    background: var(--accent); color: white;
+    font-size: 15px; font-family: 'Nunito', sans-serif; font-weight: 800;
+    cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+  }
+  .vocab-add-btn:hover { opacity: 0.85; }
+  .vocab-stats {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .vocab-stats-label { font-size: 13px; color: var(--muted); font-weight: 700; }
+  .vocab-stats-count {
+    font-size: 12px; font-weight: 800; color: var(--accent2);
+    background: var(--accent-bg); padding: 3px 10px; border-radius: 99px;
+  }
+  .vocab-list { display: flex; flex-direction: column; gap: 6px; }
+  .vocab-list-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px; background: var(--surface2);
+    border-radius: 12px; border: 1px solid var(--border);
+    animation: fadeUp 0.15s ease;
+  }
+  .vocab-list-word { font-size: 15px; font-weight: 700; color: var(--text); }
+  .vocab-list-del {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 16px; padding: 2px 4px;
+    border-radius: 6px; transition: all 0.1s; line-height: 1;
+  }
+  .vocab-list-del:hover { color: var(--error); background: var(--error-bg); }
+  .vocab-empty-state {
+    text-align: center; padding: 32px 16px;
+    color: var(--muted); font-size: 14px; font-weight: 600;
+  }
+  .vocab-empty-state .vocab-empty-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+  .vocab-clear-btn {
+    margin-top: 16px; width: 100%; padding: 10px;
+    background: transparent; border: 1px solid var(--error-border);
+    border-radius: 12px; color: var(--error);
+    font-size: 13px; font-family: 'Nunito', sans-serif; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .vocab-clear-btn:hover { background: var(--error-bg); }
+  
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="flag-wrap">🇳🇱</div>
+  <h1>Dutch Practice</h1>
+  <p>A1–A2 Grammar</p>
+</div>
+
+<div style="display:flex;gap:12px;width:100%;max-width:520px;margin-bottom:20px;">
+  <div class="score-pill">
+    <span class="val" id="correct">0</span>
+    <span class="lbl">Верно</span>
+  </div>
+  <div class="score-pill">
+    <span class="val" id="total">0</span>
+    <span class="lbl">Всего</span>
+  </div>
+  <div class="score-pill">
+    <span class="val" id="pct">—</span>
+    <span class="lbl">Точность</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="tabs">
+    <button class="tab-btn active" id="tabExercise" onclick="switchTab('exercise')">✏️ Упражнения</button>
+    <button class="tab-btn" id="tabVocab" onclick="switchTab('vocab')">📚 Словарь <span id="vocabCount" style="background:rgba(255,255,255,0.2);border-radius:99px;padding:1px 7px;font-size:11px;margin-left:2px;">0</span></button>
+  </div>
+
+  <!-- EXERCISE TAB -->
+  <div class="tab-pane active" id="paneExercise">
+    <div class="field">
+      <label>Тема грамматики</label>
+      <select id="topicSelect">
+        <option value="1.1 – Persoonlijk voornaamwoord">1.1 – Persoonlijk voornaamwoord</option>
+        <option value="1.2 – Bezittelijk voornaamwoord">1.2 – Bezittelijk voornaamwoord</option>
+        <option value="1.3 – Aanwijzend voornaamwoord">1.3 – Aanwijzend voornaamwoord</option>
+        <option value="1.4 – Wederkerend voornaamwoord">1.4 – Wederkerend voornaamwoord</option>
+        <option value="2.1 – Tegenwoordige tijd">2.1 – Tegenwoordige tijd</option>
+        <option value="2.2 – Voltooide tijd">2.2 – Voltooide tijd (hebben/zijn)</option>
+        <option value="2.3 – Verleden tijd">2.3 – Verleden tijd</option>
+        <option value="2.4 – Toekomst">2.4 – Toekomst</option>
+        <option value="2.5 – Zou">2.5 – Zou</option>
+        <option value="2.6 – Modale werkwoorden">2.6 – Modale werkwoorden</option>
+        <option value="2.7 – Scheidbare werkwoorden">2.7 – Scheidbare werkwoorden</option>
+        <option value="2.8 – Werkwoorden met vast voorzetsel">2.8 – Werkwoorden met vast voorzetsel</option>
+        <option value="2.9 – Staan, liggen, hangen, zitten">2.9 – Staan/liggen/hangen/zitten</option>
+        <option value="2.10 – De passief">2.10 – De passief</option>
+        <option value="3.1 – Het lidwoord (de/het)">3.1 – Het lidwoord (de/het)</option>
+        <option value="3.2 – Het meervoud">3.2 – Het meervoud</option>
+        <option value="4 – Bijvoeglijk naamwoord">4 – Bijvoeglijk naamwoord</option>
+        <option value="5 – Vergelijken">5 – Vergelijken</option>
+        <option value="6.1 – Voorzetsels van plaats">6.1 – Voorzetsels van plaats</option>
+        <option value="6.2 – Voorzetsels van tijd">6.2 – Voorzetsels van tijd</option>
+        <option value="7.1 – Niet en geen">7.1 – Niet en geen</option>
+        <option value="7.2 – Er/daar">7.2 – Er/daar</option>
+        <option value="8.1 – En/of">8.1 – En/of</option>
+        <option value="8.2 – Want en maar">8.2 – Want en maar</option>
+        <option value="8.3 – Omdat en als">8.3 – Omdat en als</option>
+        <option value="8.5 – Toen">8.5 – Toen</option>
+        <option value="8.6 – Hoofdzin en bijzin">8.6 – Hoofdzin en bijzin</option>
+        <option value="8.7 – Dat en of">8.7 – Dat en of</option>
+        <option value="9.1 – De hoofdzin">9.1 – De hoofdzin</option>
+        <option value="9.2 – Inversie">9.2 – Inversie</option>
+        <option value="9.3 – Vraagzinnen">9.3 – Vraagzinnen</option>
+        <option value="9.4 – Aan het + werkwoord">9.4 – Aan het + werkwoord</option>
+        <option value="9.5 – Te + werkwoord">9.5 – Te + werkwoord</option>
+        <option value="9.6 – Om te">9.6 – Om te</option>
+        <option value="9.7 – Gebiedende wijs">9.7 – Gebiedende wijs</option>
+        <option value="9.8 – Beleefdheid">9.8 – Beleefdheid</option>
+      </select>
+    </div>
+
+    <div id="startArea">
+      <p>Выбери тему и начни практику</p>
+      <button class="btn" onclick="generate()">Начать →</button>
+    </div>
+
+    <div id="exerciseArea"></div>
+  </div>
+
+  <!-- VOCAB TAB -->
+  <div class="tab-pane" id="paneVocab">
+    <div class="vocab-input-row">
+      <input type="text" id="vocabInput" placeholder="Добавь слово (напр. fiets)" onkeydown="if(event.key==='Enter')addWord()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button class="vocab-add-btn" onclick="addWord()">+ Добавить</button>
+    </div>
+    <div class="vocab-stats">
+      <span class="vocab-stats-label">Слова используются в упражнениях</span>
+      <span class="vocab-stats-count" id="vocabCountBig">0 слов</span>
+    </div>
+    <div id="vocabList"></div>
+    <div id="vocabFooter" style="display:none">
+      <button class="vocab-clear-btn" onclick="clearVocab()">Очистить всё</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let current = null;
+let correctCount = 0;
+let totalCount = 0;
+let seenSentences = [];
+let mode = 'fillin';
+
+let vocab = [];
+
+function switchTab(tab) {
+  document.getElementById('paneExercise').classList.toggle('active', tab === 'exercise');
+  document.getElementById('paneVocab').classList.toggle('active', tab === 'vocab');
+  document.getElementById('tabExercise').classList.toggle('active', tab === 'exercise');
+  document.getElementById('tabVocab').classList.toggle('active', tab === 'vocab');
+  if (tab === 'vocab') setTimeout(() => document.getElementById('vocabInput').focus(), 100);
+}
+
+function addWord() {
+  const input = document.getElementById('vocabInput');
+  const word = input.value.trim();
+  if (!word || vocab.includes(word)) { input.value = ''; return; }
+  vocab.push(word);
+  input.value = '';
+  input.focus();
+  renderVocabList();
+}
+
+function removeWord(w) {
+  vocab = vocab.filter(v => v !== w);
+  renderVocabList();
+}
+
+function clearVocab() {
+  if (confirm('Удалить все слова?')) { vocab = []; renderVocabList(); }
+}
+
+function renderVocabList() {
+  const list = document.getElementById('vocabList');
+  const countEl = document.getElementById('vocabCount');
+  const countBig = document.getElementById('vocabCountBig');
+  const footer = document.getElementById('vocabFooter');
+  const n = vocab.length;
+  const label = n === 1 ? 'слово' : n > 4 ? 'слов' : 'слова';
+  if (countEl) countEl.textContent = n;
+  if (countBig) countBig.textContent = n + ' ' + label;
+  if (footer) footer.style.display = n > 0 ? 'block' : 'none';
+  if (n === 0) {
+    list.innerHTML = '<div class="vocab-empty-state"><span class="vocab-empty-icon">📖</span>Пока пусто — добавь слова выше,<br>и Claude будет использовать их в упражнениях</div>';
+    return;
+  }
+  list.innerHTML = vocab.map(w =>
+    `<div class="vocab-list-item">
+      <span class="vocab-list-word">${escHtml(w)}</span>
+      <button class="vocab-list-del" onclick="removeWord('${escHtml(w).replace(/'/g,"\'")}')">✕</button>
+    </div>`
+  ).join('');
+}
+
+renderVocabList();
+
+function setMode(m) {
+  mode = m;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function adjustW(input) {
+  input.style.width = Math.max(90, input.value.length * 13 + 20) + 'px';
+}
+function updateScore() {
+  document.getElementById('correct').textContent = correctCount;
+  document.getElementById('total').textContent = totalCount;
+  document.getElementById('pct').textContent = totalCount > 0 ? Math.round(correctCount/totalCount*100) + '%' : '—';
+}
+
+async function generate() {
+  const topic = document.getElementById('topicSelect').value;
+  const area = document.getElementById('exerciseArea');
+  document.getElementById('startArea').style.display = 'none';
+  const modes = ['fillin', 'multiple', 'translation'];
+  mode = modes[Math.floor(Math.random() * 3)];
+  current = null;
+
+  area.innerHTML = `
+    <hr class="divider">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <span class="loading-text">Генерирую упражнение...</span>
+    </div>
+  `;
+
+  const seenBlock = seenSentences.length > 0
+    ? `\nDeze zinnen zijn al gebruikt, genereer iets ANDERS:\n${seenSentences.map((s,i) => `${i+1}. ${s}`).join('\n')}\n`
+    : '';
+
+  const isMultiple = mode === 'multiple';
+  const isTranslation = mode === 'translation';
+  const jsonShape = isMultiple
+    ? `{"sentence_nl":"De zin met ___ op de plek van het gat","answer":"juist antwoord","options":["juist antwoord","fout1","fout2","fout3"],"hint":"подсказка на русском (макс 8 слов)","translation_ru":"перевод предложения на русский"}`
+    : isTranslation
+    ? `{"sentence_ru":"Русское предложение для перевода","answer_nl":"полный перевод на нидерландский","hint":"подсказка на русском (макс 8 слов о грамматике)"}`
+    : `{"sentence_nl":"De zin met ___ op de plek van het gat","answer":"juist antwoord","hint":"подсказка на русском (макс 8 слов)","translation_ru":"перевод предложения на русский"}`;
+
+  const extraRules = isMultiple
+    ? `- Geef 4 opties in "options": het juiste antwoord en 3 plausibele maar foute alternatieven\n- Schud de opties door elkaar (het juiste hoeft niet eerste te zijn)`
+    : isTranslation
+    ? `- Maak een kort Russisch zinnetje (A1-A2 niveau) dat precies dit grammaticaonderwerp test\n- "answer_nl" is de volledige correcte Nederlandse vertaling\n- De hint legt kort de grammaticaregel uit in het Russisch`
+    : '';
+
+
+  const vocabSample = vocab.length > 0
+    ? [...vocab].sort(() => Math.random() - 0.5).slice(0, 6)
+    : [];
+  const vocabBlock = vocabSample.length > 0
+    ? `\nGebruik bij voorkeur een of meer van deze woorden uit het persoonlijk woordenboek van de student in de zin (als object, onderwerp of bijwoord — maar NIET als het gat zelf): ${vocabSample.join(', ')}\n`
+    : '';
+
+  const recentAnswers = seenSentences.slice(-6).join(', ');
+  const varietyBlock = recentAnswers ? `\nDe laatste antwoorden waren: ${recentAnswers}. Gebruik een ANDER woord als antwoord.\n` : '';
+
+  const topicGuidance = topic.includes('Bezittelijk')
+    ? `\nVoor bezittelijk voornaamwoord: wissel VERPLICHT af tussen: mijn, jouw/je, zijn, haar, ons/onze, jullie, hun. Gebruik NIET alleen "mijn". Kies een andere persoon elke keer.\n`
+    : topic.includes('Persoonlijk')
+    ? `\nVoor persoonlijk voornaamwoord: wissel af tussen: ik, jij/je, hij, zij/ze, wij/we, jullie, zij/ze (meervoud). Gebruik niet altijd dezelfde persoon.\n`
+    : topic.includes('Modale')
+    ? `\nVoor modale werkwoorden: wissel af tussen kunnen, willen, moeten, mogen, zullen. Niet altijd hetzelfde werkwoord.\n`
+    : '';
+
+  const prompt = `Je bent een Nederlandse taaldocent. Genereer een fill-in-the-gap oefening voor A1-A2 niveau.
+
+Grammaticaonderwerp: ${topic}
+${topicGuidance}${seenBlock}${varietyBlock}${vocabBlock}
+Geef ALLEEN dit JSON-object terug, zonder uitleg, zonder markdown, zonder backticks:
+${jsonShape}
+
+Regels:
+- Gewone A1-A2 woordenschat (huis, werk, school, familie, eten, stad)
+- Precies EEN gat, gemarkeerd als ___
+- Het gat test precies dit grammaticaonderwerp
+- Hint in het Russisch, kort
+- Genereer een UNIEKE zin met een ANDER antwoord dan de vorige oefeningen
+${extraRules}`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-opus-4-5",
+        max_tokens: 400,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.map(b => b.text || "").join("").trim().replace(/```json|```/g, "").trim();
+    current = JSON.parse(raw);
+    current.topic = topic;
+    current.mode = mode;
+    seenSentences.push(current.sentence_nl);
+    if (seenSentences.length > 20) seenSentences.shift();
+    renderExercise();
+  } catch(e) {
+    area.innerHTML = `
+      <hr class="divider">
+      <div style="font-size:14px;color:var(--error);padding:8px 0 16px;font-weight:700;">Ошибка при генерации. Попробуй ещё раз.</div>
+      <button class="btn" onclick="generate()">Попробовать снова</button>
+    `;
+  }
+}
+
+function renderExercise() {
+  const ex = current;
+  const parts = ex.sentence_nl.split('___');
+  const area = document.getElementById('exerciseArea');
+  const letters = ['A', 'B', 'C', 'D'];
+
+  let inputHtml = '';
+  if (ex.mode === 'translation') {
+    inputHtml = `
+      <div class="sentence-box">
+        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Переведи на нидерландский</div>
+        <div class="sentence" style="color:var(--accent2);">${escHtml(ex.sentence_ru)}</div>
+      </div>
+      <textarea id="gi" rows="2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Напиши перевод..." style="width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:14px;background:var(--surface2);color:var(--text);font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;resize:none;margin-bottom:16px;transition:border-color 0.15s;caret-color:var(--accent2);" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter'&&event.ctrlKey&&!this.disabled)check()"></textarea>
+    `;
+  } else if (ex.mode === 'fillin') {
+    inputHtml = `
+      <div class="sentence-box">
+        <div class="sentence">
+          ${escHtml(parts[0])}<input class="gap-input" id="gi" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="?" oninput="adjustW(this)" onkeydown="if(event.key==='Enter'&&!this.disabled)check()">${escHtml(parts[1] || '')}
+        </div>
+      </div>
+    `;
+  } else {
+    const opts = ex.options || [];
+    const choicesHtml = opts.map((opt, i) => `
+      <button class="choice-btn" id="choice-${i}" onclick="pickChoice(${i}, '${escHtml(opt).replace(/'/g,"\\'")}')">
+        <span class="opt-letter">${letters[i]}</span>
+        ${escHtml(opt)}
+      </button>
+    `).join('');
+    inputHtml = `
+      <div class="sentence-box">
+        <div class="sentence">${escHtml(parts[0])}<span style="display:inline-block;min-width:80px;border-bottom:2.5px solid var(--accent);margin:0 4px;text-align:center;color:var(--accent);font-weight:800;" id="gapDisplay">___</span>${escHtml(parts[1] || '')}</div>
+      </div>
+      <div class="choices" id="choicesBox">${choicesHtml}</div>
+    `;
+  }
+
+  area.innerHTML = `
+    <hr class="divider">
+    <div class="exercise">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div class="exercise-meta" style="margin-bottom:0;">✦ ${escHtml(ex.topic)}</div>
+        <div style="font-size:11px;font-weight:800;color:var(--muted);background:var(--surface2);padding:4px 10px;border-radius:99px;">${ex.mode === 'fillin' ? '✏️ Fill in gap' : ex.mode === 'multiple' ? '🎯 Multiple choice' : '🌍 Перевод'}</div>
+      </div>
+      ${inputHtml}
+      <div class="hint-box"><span class="hint-icon">💡</span>${escHtml(ex.hint)}</div>
+      <div id="fb"></div>
+      ${(ex.mode === 'fillin' || ex.mode === 'translation') ? `<button class="btn" id="actionBtn" onclick="check()">${ex.mode === 'translation' ? 'Проверить (Ctrl+Enter)' : 'Проверить'}</button>` : ''}
+    </div>
+  `;
+
+  if (ex.mode === 'fillin') {
+    document.getElementById('gi').focus();
+  }
+}
+
+function pickChoice(idx, chosen) {
+  if (!current) return;
+  const ans = current.answer;
+  const letters = ['A','B','C','D'];
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach(b => b.disabled = true);
+
+  totalCount++;
+  const fb = document.getElementById('fb');
+  const gapDisplay = document.getElementById('gapDisplay');
+
+  if (chosen.toLowerCase() === ans.toLowerCase()) {
+    correctCount++;
+    btns[idx].classList.add('correct');
+    if (gapDisplay) { gapDisplay.textContent = ans; gapDisplay.style.color = 'var(--success)'; gapDisplay.style.borderBottomColor = 'var(--success)'; }
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<span class="feedback-icon">🎉</span><div><div>Верно!</div><div class="transl">' + escHtml(current.translation_ru) + '</div></div>';
+  } else {
+    btns[idx].classList.add('wrong');
+    // reveal correct
+    current.options.forEach((opt, i) => {
+      if (opt.toLowerCase() === ans.toLowerCase()) btns[i].classList.add('reveal');
+    });
+    if (gapDisplay) { gapDisplay.textContent = ans; gapDisplay.style.color = 'var(--success)'; gapDisplay.style.borderBottomColor = 'var(--success)'; }
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '<span class="feedback-icon">💔</span><div><div>Не совсем. Правильно: <strong>' + escHtml(ans) + '</strong></div><div class="transl">' + escHtml(current.translation_ru) + '</div></div>';
+  }
+
+  updateScore();
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn';
+  nextBtn.style.marginTop = '16px';
+  nextBtn.textContent = 'Следующее →';
+  nextBtn.onclick = generate;
+  fb.after(nextBtn);
+}
+
+function check() {
+  if (!current) return;
+  const gi = document.getElementById('gi');
+  const fb = document.getElementById('fb');
+  const btn = document.getElementById('actionBtn');
+
+  gi.disabled = true;
+  totalCount++;
+  updateScore();
+
+  if (current.mode === 'translation') {
+    const val = gi.value.trim();
+    const ans = current.answer_nl;
+    // For translation: always show the answer and let user self-assess
+    fb.className = 'feedback correct';
+    fb.innerHTML = `<span class="feedback-icon">📝</span><div><div style="margin-bottom:6px;">Правильный перевод:</div><div style="font-weight:800;font-size:16px;">${escHtml(ans)}</div></div>`;
+    correctCount++;
+    updateScore();
+  } else {
+    const val = gi.value.trim().toLowerCase();
+    const ans = current.answer.toLowerCase();
+    if (val === ans) {
+      correctCount++;
+      updateScore();
+      fb.className = 'feedback correct';
+      fb.innerHTML = '<span class="feedback-icon">🎉</span><div><div>Верно!</div><div class="transl">' + escHtml(current.translation_ru) + '</div></div>';
+    } else {
+      fb.className = 'feedback wrong';
+      fb.innerHTML = '<span class="feedback-icon">💔</span><div><div>Не совсем. Правильно: <strong>' + escHtml(current.answer) + '</strong></div><div class="transl">' + escHtml(current.translation_ru) + '</div></div>';
+    }
+  }
+
+  btn.textContent = 'Следующее →';
+  btn.onclick = generate;
+}
+</script>
+</body>
+</html>
